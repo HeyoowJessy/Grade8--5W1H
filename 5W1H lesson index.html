@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade 8 ESL Interactive Lesson: 5W1H and Natural Disasters</title>
+  <style>
+    :root{
+      --bg-image: url('5W1H cover.png');
+      --nav:#3f2f24;
+      --nav2:#5f4b32;
+      --cream:#f7ead7;
+      --sand:#dfc7a4;
+      --clay:#b8734f;
+      --sage:#9caf88;
+      --moss:#6f7d52;
+      --terracotta:#c97856;
+      --brown:#3f2f24;
+      --ink:#2f241d;
+      --card:rgba(255,250,242,.96);
+      --shadow:0 18px 40px rgba(63,47,36,.20);
+      --radius:24px;
+      --zoom:1;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Times New Roman", Times, serif;
+      font-size:14px;
+      color:var(--ink);
+      background:linear-gradient(120deg,#efe1cc,#d8c2a5,#c8d3b0);
+      overflow:hidden;
+    }
+
+    .app{display:grid;grid-template-columns:260px 1fr;height:100vh;width:100vw;}
+    aside{
+      background:linear-gradient(180deg,var(--nav),var(--nav2));
+      color:white;
+      padding:18px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      box-shadow:8px 0 30px rgba(0,0,0,.18);
+      z-index:5;
+    }
+    .brand{padding:10px 12px 16px;border-bottom:1px solid rgba(255,255,255,.2)}
+    .brand h1{font-size:22px;margin:0 0 6px;line-height:1.15}.brand p{margin:0;font-size:13px;opacity:.85}
+    .navbtn{
+      border:0;color:white;text-align:left;border-radius:18px;padding:13px 14px;font-size:17px;font-weight:700;
+      background:rgba(255,255,255,.12);cursor:pointer;min-height:52px;transition:.2s;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+      font-family:"Times New Roman", Times, serif;
+    }
+    .navbtn:hover,.navbtn.active{background:linear-gradient(135deg,var(--terracotta),var(--sage));transform:translateX(4px)}
+    .picker,.tools{background:rgba(255,255,255,.12);border-radius:22px;padding:12px}.picker h3,.tools h3{margin:0 0 10px;font-size:17px}.pickrow,.toolrow{display:flex;gap:8px;flex-wrap:wrap}.pickrow button,.toolrow button{flex:1;border:0;border-radius:16px;padding:10px;font-size:18px;font-weight:800;cursor:pointer;background:var(--sand);color:var(--brown);font-family:"Times New Roman", Times, serif;min-width:68px}
+    #pickedNumber{font-size:44px;font-weight:900;text-align:center;line-height:1;background:var(--cream);color:var(--brown);border-radius:22px;padding:12px;margin-top:10px;box-shadow:var(--shadow)}
+
+    main{position:relative;overflow:hidden}.slide{display:none;height:100vh;padding:34px;overflow-y:auto;transform:scale(var(--zoom));transform-origin:top left;width:calc(100% / var(--zoom));}.slide.active{display:block;animation:pop .35s ease}@keyframes pop{from{opacity:0;transform:scale(calc(var(--zoom) * .985))}to{opacity:1;transform:scale(var(--zoom))}}
+    .hero{
+      min-height:calc(100vh - 68px);border-radius:36px;background-image:var(--bg-image);
+      background-size:contain;background-repeat:no-repeat;background-position:center;background-color:#ffffff;box-shadow:var(--shadow);padding:54px;color:white;display:flex;flex-direction:column;justify-content:center;
+    }
+    .hero h2{font-size:76px;margin:0;letter-spacing:-1px}.hero p{font-size:30px;max-width:850px}.badge{display:inline-block;background:rgba(255,255,255,.22);padding:12px 18px;border-radius:999px;font-weight:800;width:max-content;margin-bottom:16px}
+    .title{font-size:44px;margin:0 0 10px;color:var(--brown)}.subtitle{font-size:22px;margin:0 0 24px;color:#6b5a46}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}.card{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border:3px solid rgba(255,250,242,.8)}
+
+    .centerPanel{
+      max-width:900px;
+      margin:24px auto;
+      min-height:390px;
+      background:var(--card);
+      border-radius:38px;
+      padding:40px;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      border:5px solid rgba(255,250,242,.9);
+    }
+    .centerPanel.hidden{display:none}.centerPanel h3{font-size:58px;margin:0 0 16px;color:var(--brown)}.tag{display:inline-block;border-radius:999px;padding:7px 13px;font-size:20px;font-weight:800;background:#e8d9c4;color:var(--brown);margin:8px 0}.centerPanel p{font-size:30px;line-height:1.35;margin:10px 0}.centerPanel .example{font-size:26px;text-align:left;width:100%;max-width:780px}.example{background:#f3dfbd;border-left:8px solid var(--clay);padding:12px;border-radius:14px;margin-top:10px}
+    .controlRow{display:flex;justify-content:center;gap:16px;margin:18px 0}.bigBtn{border:0;border-radius:999px;padding:16px 26px;font-size:24px;font-weight:900;cursor:pointer;background:var(--sand);color:var(--brown);box-shadow:var(--shadow);font-family:"Times New Roman", Times, serif}.bigBtn.alt{background:#d8e0c0}
+
+    .miniGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}.miniCard{background:var(--card);border-radius:20px;padding:14px 10px;text-align:center;font-size:21px;font-weight:900;box-shadow:var(--shadow);cursor:pointer;min-height:70px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(111,125,82,.18)}.miniCard:hover{background:#f3dfbd;transform:translateY(-3px)}
+    .vocabCard{font-size:18px}.whCard{color:#3f2f24}#whButtons{grid-template-columns:repeat(3,1fr)}.wh0{background:#f7d9d0}.wh1{background:#d9ead3}.wh2{background:#d7e5f0}.wh3{background:#fff0c9}.wh4{background:#eadcf8}.wh5{background:#ffd9c7}
+
+    .disasterGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.disasterIcon{background:var(--card);border-radius:30px;padding:28px;min-height:210px;text-align:center;box-shadow:var(--shadow);cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;border:2px solid rgba(63,47,36,.08)}.disasterIcon:hover{transform:translateY(-5px);background:#f3dfbd}.disasterIcon .emoji{font-size:74px}.disasterIcon h3{font-size:26px;margin:14px 0 0}.articleReveal{display:none;margin-top:22px}.articleReveal.show{display:block}.articleReveal h3{font-size:34px;margin:0 0 10px}.articleReveal p{font-size:25px;line-height:1.45}.questionSquares{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.questionSquare{border-radius:22px;padding:16px;background:#f3dfbd;box-shadow:0 8px 18px rgba(63,47,36,.14);font-size:22px;line-height:1.3}.questionSquare b{font-size:30px;display:block;color:#3f2f24;margin-bottom:5px}.questionAnswer{display:none;margin-top:8px;font-size:20px;line-height:1.35}.questionSquare.open .questionAnswer{display:block}.qWho{background:#f7d9d0}.qWhat{background:#d9ead3}.qWhen{background:#fff0c9}.qWhere{background:#d7e5f0}.qWhy{background:#eadcf8}.qHow{background:#ffd9c7}.source{font-size:14px;color:#7a6a58}
+
+    .pillrow{display:flex;flex-wrap:wrap;gap:10px}.pill{border:0;border-radius:999px;padding:14px 18px;font-size:18px;font-weight:900;cursor:pointer;background:#e8d9c4;color:var(--brown);font-family:"Times New Roman", Times, serif}.pill:hover{background:#d8e0c0}.speakBox{font-size:34px;line-height:1.5;background:var(--card);border-radius:28px;padding:32px;box-shadow:var(--shadow);min-height:170px}.answer{display:none;background:#d8e0c0;border-left:8px solid var(--moss);border-radius:18px;padding:20px;margin-top:16px;font-size:28px}.show{display:block}.match{display:grid;grid-template-columns:1fr 1fr;gap:18px}.match button{border:0;border-radius:20px;padding:16px;font-size:19px;font-weight:900;cursor:pointer;background:var(--card);box-shadow:var(--shadow);font-family:"Times New Roman", Times, serif}.match button.selected{outline:6px solid var(--sand)}.match button.correct{background:#d9ead3}.match button.wrong{background:#f7d9d0}.score{font-size:24px;font-weight:900;background:var(--card);border-radius:18px;padding:12px 18px;display:inline-block}.footerNote{font-size:14px;color:#7a6a58;margin-top:20px}
+    @media(max-width:900px){.app{grid-template-columns:1fr}aside{position:fixed;bottom:0;left:0;right:0;height:170px;overflow-x:auto;flex-direction:row}.brand,.picker,.tools{display:none}.navbtn{min-width:170px}.slide{padding-bottom:190px}.hero h2{font-size:48px}.hero p{font-size:22px}.centerPanel h3{font-size:42px}.centerPanel p{font-size:24px}.miniGrid,.disasterGrid,.questionSquares{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><h1>5W1H Disaster News</h1><p>Grade 8 ESL Interactive Lesson</p></div>
+    <button class="navbtn active" onclick="go(0)">1. Cover Page</button>
+    <button class="navbtn" onclick="go(1)">2. Vocabulary Review</button>
+    <button class="navbtn" onclick="go(2)">3. Lesson Content</button>
+    <button class="navbtn" onclick="go(3)">4. Application</button>
+    <button class="navbtn" onclick="go(4)">5. Review Game</button>
+    <div class="tools"><h3>Screen Options</h3><div class="toolrow"><button onclick="toggleFullScreen()">Full</button><button onclick="zoomIn()">Zoom +</button><button onclick="zoomOut()">Zoom -</button><button onclick="resetZoom()">Reset</button></div></div>
+    <div class="picker"><h3>Number Picker 1–31</h3><div class="pickrow"><button onclick="pickNum()">Pick</button><button onclick="resetNum()">Reset</button></div><div id="pickedNumber">?</div></div>
+  </aside>
+
+  <main id="mainArea">
+    <section class="slide active">
+      <div class="hero"></div>
+    </section>
+
+    <section class="slide">
+      <h2 class="title">Vocabulary Review</h2>
+      <div class="miniGrid" id="vocabButtons"></div>
+      <div class="centerPanel hidden" id="vocabPanel"></div>
+      <div class="controlRow"><button class="bigBtn alt" onclick="prevVocab()">Previous</button><button class="bigBtn" onclick="nextVocab()">Next</button></div>
+    </section>
+
+    <section class="slide">
+      <h2 class="title">Lesson Content: 5W1H</h2>
+      <div class="miniGrid" id="whButtons"></div>
+      <div class="centerPanel" id="whPanel"><p>Choose: Who, What, Where, When, Why, or How.</p></div>
+      <div class="controlRow"><button class="bigBtn alt" onclick="prevWh()">Previous</button><button class="bigBtn" onclick="nextWh()">Next</button></div>
+    </section>
+
+    <section class="slide">
+      <h2 class="title">Application: Natural Disaster News</h2>
+      <div class="disasterGrid" id="newsIcons"></div>
+      <div class="card articleReveal" id="articleBox"></div>
+      <p class="footerNote">Teacher note: These are simplified classroom summaries. You may replace them with your own real news articles.</p>
+    </section>
+
+    <section class="slide">
+      <h2 class="title">Review Game</h2><p class="subtitle">Play the Wordwall game to practice 5W1H and natural disaster vocabulary.</p>
+      <div class="card" style="height:78vh; padding:16px; overflow:hidden;">
+        <div style="display:flex; justify-content:center; align-items:center; height:100%;">
+          <a href="https://wordwall.net/embed/88e56eca1770471f8abc4ea70bd4f6c1?themeId=21&templateId=69&fontStackId=1" target="_blank" style="text-decoration:none;">
+            <button class="bigBtn" style="font-size:32px; padding:24px 42px; cursor:pointer;">Open Wordwall Review Game</button>
+          </a>
+        </div>
+      </div>
+      <p class="footerNote">Smartboard tip: Use the Full button on the left side, then tap Start inside the Wordwall game.</p>
+    </section>
+  </main>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')], navs=[...document.querySelectorAll('.navbtn')];
+function go(i){slides.forEach(s=>s.classList.remove('active'));navs.forEach(n=>n.classList.remove('active'));slides[i].classList.add('active');navs[i].classList.add('active')}
+function pickNum(){document.getElementById('pickedNumber').textContent=Math.floor(Math.random()*31)+1}function resetNum(){document.getElementById('pickedNumber').textContent='?'}
+let zoomLevel=1;
+function setZoom(){document.documentElement.style.setProperty('--zoom', zoomLevel)}
+function zoomIn(){zoomLevel=Math.min(1.4, zoomLevel+0.1);setZoom()}
+function zoomOut(){zoomLevel=Math.max(0.75, zoomLevel-0.1);setZoom()}
+function resetZoom(){zoomLevel=1;setZoom()}
+function toggleFullScreen(){if(!document.fullscreenElement){document.documentElement.requestFullscreen()}else{document.exitFullscreen()}}
+
+const vocab=[
+ {w:'earthquake',pos:'noun',m:'a sudden shaking of the ground',ex:'A strong earthquake shook the city at night.'},
+ {w:'typhoon',pos:'noun',m:'a very strong storm with heavy rain and strong wind',ex:'The typhoon brought heavy rain to the Philippines.'},
+ {w:'flood',pos:'noun / verb',m:'water covering land that is usually dry',ex:'The streets flooded after many hours of rain.'},
+ {w:'tsunami',pos:'noun',m:'a very large ocean wave, often caused by an earthquake under the sea',ex:'People moved to higher ground after the tsunami warning.'},
+ {w:'volcanic eruption',pos:'noun phrase',m:'when lava, ash, or gas comes out of a volcano',ex:'The volcanic eruption sent ash into the sky.'},
+ {w:'wildfire',pos:'noun',m:'a large fire that spreads quickly in forests or grasslands',ex:'Firefighters worked hard to stop the wildfire.'},
+ {w:'evacuate',pos:'verb',m:'to leave a dangerous place and go somewhere safer',ex:'Families had to evacuate before the flood reached their homes.'},
+ {w:'prepare',pos:'verb',m:'to get ready before something happens',ex:'We prepare an emergency bag before typhoon season.'},
+ {w:'emergency bag',pos:'noun phrase',m:'a bag with important items for disasters',ex:'An emergency bag should have water, food, medicine, and a flashlight.'},
+ {w:'safety tips',pos:'noun phrase',m:'simple advice that helps people stay safe',ex:'The teacher gave safety tips before the earthquake drill.'}
+];
+let vocabIndex=0;
+document.getElementById('vocabButtons').innerHTML=vocab.map((v,i)=>`<div class="miniCard vocabCard" onclick="showVocab(${i})">${v.w}</div>`).join('');
+function showVocab(i){vocabIndex=(i+vocab.length)%vocab.length; const v=vocab[vocabIndex]; const panel=document.getElementById('vocabPanel'); panel.classList.remove('hidden'); panel.innerHTML=`<h3>${v.w}</h3><div class="tag">${v.pos}</div><p><b>Meaning:</b> ${v.m}</p><div class="example"><b>Sentence:</b> ${v.ex}</div>`}
+function nextVocab(){showVocab(vocabIndex+1)}function prevVocab(){showVocab(vocabIndex-1)}
+
+const wh=[
+ {w:'Who?',m:'Ask about a person, people, group, or animal.',ex1:'Who helped the people? The firefighters helped them.',ex2:'Who felt the earthquake? The students felt it.'},
+ {w:'What?',m:'Ask about the event or action.',ex1:'What happened? A typhoon came.',ex2:'What did people prepare? They prepared emergency bags.'},
+ {w:'Where?',m:'Ask about the place.',ex1:'Where did it happen? It happened in Japan.',ex2:'Where did people go? They went to a safe place.'},
+ {w:'When?',m:'Ask about the time, day, or date.',ex1:'When did it happen? It happened in the morning.',ex2:'When did the warning start? It started at night.'},
+ {w:'Why?',m:'Ask about the reason.',ex1:'Why did people leave? Because it was dangerous.',ex2:'Why did the flood happen? Because heavy rain fell for many hours.'},
+ {w:'How?',m:'Ask about the way or condition.',ex1:'How did people stay safe? They moved to a safe place.',ex2:'How did rescuers help? They used boats and trucks.'}
+];
+let whIndex=0;
+document.getElementById('whButtons').innerHTML=wh.map((x,i)=>`<div class="miniCard whCard wh${i}" onclick="showWh(${i})">${x.w}</div>`).join('');
+function showWh(i){whIndex=(i+wh.length)%wh.length; const x=wh[whIndex]; document.getElementById('whPanel').innerHTML=`<h3>${x.w}</h3><p>${x.m}</p><div class="example"><b>Example 1:</b> ${x.ex1}<br><br><b>Example 2:</b> ${x.ex2}</div>`}
+function nextWh(){showWh(whIndex+1)}function prevWh(){showWh(whIndex-1)}
+
+const news=[
+ {emoji:'🌏',type:'Earthquake in Taiwan',where:'Hualien and eastern Taiwan',when:'April 2024',who:'People in eastern Taiwan, rescue workers, and local families',what:'A strong earthquake shook buildings and roads.',why:'Taiwan is near active fault lines, so earthquakes can happen.',how:'People stayed away from damaged places, checked safety news, and prepared emergency bags.',whoQ:'Who felt the earthquake?',whatQ:'What happened in Taiwan?',whenQ:'When did it happen?',whereQ:'Where did it happen?',whyQ:'Why do earthquakes happen in Taiwan?',howQ:'How did people stay safe?',text:'In April 2024, a strong earthquake shook Hualien and other parts of eastern Taiwan. People in homes, schools, and offices felt the ground move. Rescue workers checked damaged buildings and roads. The earthquake happened because Taiwan is near active fault lines. People stayed safe by moving away from dangerous areas, listening to official news, and preparing emergency bags.',source:'Recent Taiwan earthquake reports'},
+ {emoji:'🌀',type:'Typhoon in the Philippines',where:'Northern and central Philippines',when:'during typhoon season',who:'Families, students, weather officers, and local responders',what:'A typhoon brought strong wind and heavy rain.',why:'Warm ocean water can help typhoons become stronger.',how:'Families prepared food, water, flashlights, medicine, and stayed indoors.',whoQ:'Who warned the families?',whatQ:'What came to the Philippines?',whenQ:'When do typhoons often happen?',whereQ:'Where did the typhoon happen?',whyQ:'Why can typhoons become strong?',howQ:'How did families prepare?',text:'During typhoon season, a typhoon brought strong wind and heavy rain to parts of the Philippines. Weather officers warned families before the storm arrived. Some students stayed home because travel was unsafe. The typhoon became dangerous because warm ocean water can make storms stronger. Families prepared food, water, flashlights, medicine, and stayed indoors to keep safe.',source:'Recent Philippine weather reports'},
+ {emoji:'🌊',type:'Flood in the Philippines',where:'low areas and towns in the Philippines',when:'after many hours of heavy rain',who:'Families, rescue workers, and local officials',what:'Floodwater covered roads and entered some homes.',why:'Heavy rain made rivers and drainage systems overflow.',how:'Rescue workers used boats and trucks to bring people to safer places.',whoQ:'Who helped the families?',whatQ:'What covered the roads?',whenQ:'When did the flood happen?',whereQ:'Where did the flood happen?',whyQ:'Why did the flood happen?',howQ:'How did rescue workers help?',text:'After many hours of heavy rain, floodwater covered roads in some low areas and towns in the Philippines. Some homes became unsafe, so families needed help. Local officials warned people not to walk or drive in deep water. The flood happened because rivers and drainage systems overflowed. Rescue workers used boats and trucks to bring families to safer places.',source:'Recent flood reports'},
+ {emoji:'🚨',type:'Tsunami in Japan',where:'coastal areas of Japan',when:'after a strong earthquake',who:'People near the coast, weather officers, and local leaders',what:'Japan gave a tsunami warning for some coastal areas.',why:'A strong earthquake under or near the sea can push ocean water and make big waves.',how:'People moved to higher ground and waited for official updates.',whoQ:'Who moved to higher ground?',whatQ:'What warning did Japan give?',whenQ:'When did the warning happen?',whereQ:'Where was the warning?',whyQ:'Why can a tsunami happen?',howQ:'How did people stay safe?',text:'After a strong earthquake, Japan gave a tsunami warning for some coastal areas. People living near the sea were told to move to higher ground. Weather officers watched the ocean carefully and gave updates. A tsunami can happen when a strong earthquake under or near the sea pushes ocean water. People stayed safe by leaving the coast and waiting for official announcements.',source:'Recent Japan tsunami alert reports'},
+ {emoji:'🌋',type:'Volcanic Eruption in Hawaii',where:'Kīlauea volcano, Hawaii',when:'during recent volcanic activity',who:'Scientists, visitors, and nearby residents',what:'Kīlauea volcano showed eruption activity with lava and gas.',why:'Pressure under the volcano can push lava and gas to the surface.',how:'Scientists watched the volcano, and people followed safety rules and official updates.',whoQ:'Who watched the volcano?',whatQ:'What volcano showed activity?',whenQ:'When did it happen?',whereQ:'Where is Kīlauea?',whyQ:'Why can a volcano erupt?',howQ:'How can people stay safe?',text:'During recent volcanic activity, Kīlauea volcano in Hawaii showed eruption activity with lava and gas. Scientists watched the volcano carefully and shared safety updates. Visitors and nearby residents were told to follow rules and stay away from unsafe areas. The eruption happened because pressure under the volcano can push lava and gas to the surface. People stayed safe by following official updates.',source:'USGS Hawaiian Volcano Observatory'},
+ {emoji:'🔥',type:'Wildfire in Australia',where:'parts of Australia with dry grassland and forests',when:'during hot and dry weather',who:'Firefighters, families, farmers, and local communities',what:'A wildfire burned land and damaged some homes and farms.',why:'Hot weather, dry plants, and strong wind can help fires spread fast.',how:'Firefighters worked to stop the fire, and people followed warnings or evacuated.',whoQ:'Who worked to stop the fire?',whatQ:'What happened in Australia?',whenQ:'When can wildfires happen?',whereQ:'Where did the wildfire happen?',whyQ:'Why can wildfires spread fast?',howQ:'How did people stay safe?',text:'During hot and dry weather, a wildfire burned land in parts of Australia. Some homes, farms, and forests were damaged. Firefighters worked for many hours to stop the fire. Wildfires can spread fast because hot weather, dry plants, and strong wind make fire dangerous. People stayed safe by following warnings, preparing important items, and evacuating when needed.',source:'Recent Australia wildfire reports'}
+];
+document.getElementById('newsIcons').innerHTML=news.map((n,i)=>`<div class="disasterIcon" onclick="showArticle(${i})"><div class="emoji">${n.emoji}</div><h3>${n.type}</h3></div>`).join('');
+function showArticle(i){const n=news[i]; const box=document.getElementById('articleBox'); box.innerHTML=`<h3>${n.emoji} ${n.type}</h3><p>${n.text}</p><div class="questionSquares"><div class="questionSquare qWho" onclick="this.classList.toggle('open')"><b>Who?</b><div class="questionAnswer">${n.whoQ}</div></div><div class="questionSquare qWhat" onclick="this.classList.toggle('open')"><b>What?</b><div class="questionAnswer">${n.whatQ}</div></div><div class="questionSquare qWhen" onclick="this.classList.toggle('open')"><b>When?</b><div class="questionAnswer">${n.whenQ}</div></div><div class="questionSquare qWhere" onclick="this.classList.toggle('open')"><b>Where?</b><div class="questionAnswer">${n.whereQ}</div></div><div class="questionSquare qWhy" onclick="this.classList.toggle('open')"><b>Why?</b><div class="questionAnswer">${n.whyQ}</div></div><div class="questionSquare qHow" onclick="this.classList.toggle('open')"><b>How?</b><div class="questionAnswer">${n.howQ}</div></div></div><p class="source">Source basis: ${n.source}</p>`; box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'center'});}
+
+const quiz=[
+ {q:'Which question asks about a place?',a:'Where',c:['Who','Where','Why']},
+ {q:'Which question asks about a reason?',a:'Why',c:['When','Why','What']},
+ {q:'Which question asks about people?',a:'Who',c:['Who','How','Where']},
+ {q:'Which question asks about an event?',a:'What',c:['When','What','Why']},
+ {q:'Which question asks about time?',a:'When',c:['Where','When','How']},
+ {q:'Which question asks about the way something happened?',a:'How',c:['How','Who','What']}
+];
+</script>
+</body>
+</html>
